@@ -1,0 +1,65 @@
+
+<div class="content">
+    <div class="toolbar">
+      <button type="button" class="btn btn-success btn-sm" style="margin-left: 15px;">Добавить</button>
+  
+      <div style="width: calc(100vw); padding-right: 15px;">
+        <div class="input-group input-group-sm mb-3" style="height: 15px; width: 160px; float: right;">
+          <input type="search" placeholder="поиск..." class="form-control" [(ngModel)]="search" (change)="onSearchClick(false)" >
+        </div>
+  
+        <button type="button" class="btn btn-primary" 
+              style=" float: right; margin-right: 5px; --bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" (click)="onSearchClick(false)">
+              <i class="bi bi-arrow-repeat  fs-6"></i>
+        </button>
+      </div>
+    </div>
+    
+
+    <div class="table-container">
+      <table mat-table [dataSource]="ds?.results" class="mat-elevation-z8">
+  
+        <ng-container matColumnDef="nomer">
+          <th mat-header-cell *matHeaderCellDef style="width: 10vw;">
+            Номер
+          </th>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)">{{element.nom}}</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="_date">
+          <th mat-header-cell *matHeaderCellDef>
+            Дата
+          </th>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 10vw;">
+              <input matInput type="datetime" [(ngModel)]="element._date" readonly="True"readonly="True" style="background: transparent;border: none; cursor: pointer;">
+          </td>
+        </ng-container>
+  
+        
+    
+        <ng-container matColumnDef="_organization">
+          <th mat-header-cell *matHeaderCellDef>
+            Организация
+          </th>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 70vw;" class="input-text">{{element._organization.name_rus}}</td>
+        </ng-container>
+  
+    
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>
+            Действие
+          </th>
+          <td mat-cell *matCellDef="let element">
+              <mat-icon (click)="delete(element.id)" style="color: red;">delete</mat-icon>
+          </td>
+        </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayCols; sticky:true" style="font-size: 14px; height: 35px;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayCols;" style="font-size: 12px; height: 25px;"></tr>
+        </table>
+    </div>
+      
+  </div>
+    
+  
+  
