@@ -1,15 +1,15 @@
 
 <div class="content">
     <div class="toolbar">
-      <button type="button" class="btn btn-success btn-sm" style="margin-left: 15px;">Добавить</button>
+      <button type="button" class="btn btn-success btn-sm" style="margin-left: 15px;" (click)="openItem(null)">Добавить</button>
   
       <div style="width: calc(100vw); padding-right: 15px;">
         <div class="input-group input-group-sm mb-3" style="height: 15px; width: 160px; float: right;">
-          <input type="search" placeholder="поиск..." class="form-control" [(ngModel)]="search" (change)="onSearchClick(false)" >
+          <input type="search" placeholder="поиск..." class="form-control" [(ngModel)]="search" (change)="ngOnInit()" >
         </div>
   
         <button type="button" class="btn btn-primary" 
-              style=" float: right; margin-right: 5px; --bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" (click)="onSearchClick(false)">
+              style=" float: right; margin-right: 5px; --bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" (click)="ngOnInit()">
               <i class="bi bi-arrow-repeat  fs-6"></i>
         </button>
       </div>
@@ -17,31 +17,29 @@
     
 
     <div class="table-container">
-      <table mat-table [dataSource]="ds?.results" class="mat-elevation-z8">
+      <table mat-table [dataSource]="ds" class="mat-elevation-z8">
   
         <ng-container matColumnDef="nomer">
-          <th mat-header-cell *matHeaderCellDef style="width: 10vw;">
+          <th mat-header-cell *matHeaderCellDef style="width: 15vw;">
             БИН
           </th>
-          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)">{{element.nom}}</td>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)">{{element.bin}}</td>
         </ng-container>
-      
-        <ng-container matColumnDef="_date">
-          <th mat-header-cell *matHeaderCellDef>
-            АБП
-          </th>
-          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 10vw;">
-              <input matInput type="datetime" [(ngModel)]="element._date" readonly="True"readonly="True" style="background: transparent;border: none; cursor: pointer;">
-          </td>
-        </ng-container>
-  
+    
         
     
-        <ng-container matColumnDef="_organization">
+        <ng-container matColumnDef="_organization_namerus">
           <th mat-header-cell *matHeaderCellDef>
-            Наименование
+            Наименование каз
           </th>
-          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 70vw;" class="input-text">{{element._organization.name_rus}}</td>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 35vw;" class="input-text">{{element.nameKaz}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="_organization_namekaz">
+          <th mat-header-cell *matHeaderCellDef>
+            Наименование рус
+          </th>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 35vw;" class="input-text">{{element.nameRus}}</td>
         </ng-container>
   
     

@@ -1,8 +1,16 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTable, MatTableModule } from '@angular/material/table';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+} from '@angular/material/dialog';
+
 import { orgService } from '../org.service';
+import { OrgitemComponent } from '../orgitem/orgitem.component';
 
 @Component({
   selector: 'app-orglist',
@@ -16,26 +24,10 @@ import { orgService } from '../org.service';
 
 
 export class OrglistComponent {
-  displayCols: string[] = ['nomer', '_date', '_organization', 'action'];
+  dialog = inject(MatDialog);
+  displayCols: string[] = ['nomer', '_organization_namekaz', '_organization_namerus', 'action'];
   @ViewChild(MatTable) table: MatTable<any> | undefined;
-  ds:any = {
-    results:[
-      {
-        nom:'23465',
-        _date:'21-05-2024',
-        _organization:{
-          name_rus:'jsoft'
-        }
-      },
-      {
-        nom:'56655',
-        _date:'01-05-2024',
-        _organization:{
-          name_rus:'ip nurjan'
-        }
-      }
-    ]
-  }
+  ds:any
   search = ''
 
   constructor(
@@ -49,7 +41,25 @@ export class OrglistComponent {
       }
     )
   }
+
   onSearchClick(clear:boolean) { }
-  openItem(elem:any) {}
-  delete(id:number) {}
+
+
+  openItem(elem:any) {
+    this.dialog.open(OrgitemComponent, {
+      data: elem,
+      width:'35vw',
+      maxWidth:'35vw'
+    });
+  }
+
+
+  delete(id:string) {
+    this.srv.delorgitem(id).subscribe(
+      (value:any)=>{
+        console.log(value);
+        this.ngOnInit()
+      }
+    )
+  }
 }

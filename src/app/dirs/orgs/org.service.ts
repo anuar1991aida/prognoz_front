@@ -20,19 +20,26 @@ export class orgService {
       return this.http.get(this.gl.host + "/Organization")
   }
 
-//   getorgitem(id:number):any {
-//     return this.http.get(host.apiUrl + "/dirs/orgitem/"+id)   
-//   }
+
+  getorgitem(id:string):any {
+    return this.http.get(this.gl.host + "/Organization/"+id)   
+  }
 
 
-//   delorgitem(id:number):any {
-//     return this.http.delete(host.apiUrl + "/dirs/orgmarkdel/"+id)   
-//   }
+  delorgitem(id:string):any {
+    return this.http.delete(this.gl.host + "/Organization/"+ id)   
+  }
 
-//   saveorgitem(data:orgitem):any {
-//     return this.http.post(host.apiUrl + "/dirs/orgsave", data, 
-//       {observe: 'response'})   
-//   }
+
+  saveorgitem(data:any):any {
+    return this.http.post(this.gl.host + "/Organization/", data, 
+      {observe: 'response'})   
+  }
+
+  editorgitem(id:string, data:any) {
+    return this.http.put(this.gl.host + "/Organization/"  + id, data, 
+      {observe: 'response'})  
+  }
 
   
 }

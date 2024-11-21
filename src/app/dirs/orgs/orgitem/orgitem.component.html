@@ -1,1 +1,23 @@
-<p>orgitem works!</p>
+
+<form style="padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 35vw;">
+    <mat-form-field style="width: 100%">
+      <mat-label>БИН</mat-label>
+      <input matInput  [(ngModel)]="ds.bin" name="bin">
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%">
+        <mat-label>Наименование каз.</mat-label>
+        <input matInput [(ngModel)]="ds.nameKaz" name="nameKaz">
+    </mat-form-field>
+  
+    <mat-form-field style="width: 100%">
+        <mat-label>Наименование рус.</mat-label>
+        <input matInput  [(ngModel)]="ds.nameRus" name="nameRus">
+    </mat-form-field>
+
+
+    <div style="display: flex; gap: 10px;">
+        <button type="button" class="btn btn-primary btn-sm" (click)="save()">Сохранить</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="cancel()">Закрыть</button>
+    </div>
+</form>
