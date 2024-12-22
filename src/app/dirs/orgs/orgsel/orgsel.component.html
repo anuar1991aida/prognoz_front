@@ -1,13 +1,11 @@
 
 <div class="content">
-    <div class="toolbar">
-      <button type="button" class="btn btn-success btn-sm" style="margin-left: 15px;" (click)="openItem(null)">Добавить</button>
-  
-      <div style="width: calc(100vw); padding-right: 15px;">
+    <div class="toolbar">  
+      <div style="width: calc(100vw); padding-right: 15px;"> 
         <div class="input-group input-group-sm mb-3" style="height: 15px; width: 160px; float: right;">
           <input type="search" placeholder="поиск..." class="form-control" [(ngModel)]="search" (change)="ngOnInit()" >
         </div>
-  
+         
         <button type="button" class="btn btn-primary" 
               style=" float: right; margin-right: 5px; --bs-btn-padding-y: .15rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" (click)="ngOnInit()">
               <i class="bi bi-arrow-repeat  fs-6"></i>
@@ -19,11 +17,11 @@
     <div class="table-container">
       <table mat-table [dataSource]="ds" class="mat-elevation-z8">
   
-        <ng-container matColumnDef="username">
+        <ng-container matColumnDef="nomer">
           <th mat-header-cell *matHeaderCellDef style="width: 15vw;">
-            Пользователь
+            БИН
           </th>
-          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)">{{element.name}}</td>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)">{{element.bin}}</td>
         </ng-container>
     
         
@@ -32,14 +30,14 @@
           <th mat-header-cell *matHeaderCellDef>
             Наименование каз
           </th>
-          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 35vw;" class="input-text">{{element.organization.nameKaz}}</td>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 35vw;" class="input-text">{{element.nameKaz}}</td>
         </ng-container>
 
         <ng-container matColumnDef="_organization_namekaz">
           <th mat-header-cell *matHeaderCellDef>
             Наименование рус
           </th>
-          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 35vw;" class="input-text">{{element.organization.nameRus}}</td>
+          <td mat-cell *matCellDef="let element" (dblclick)="openItem(element)" style="width: 35vw;" class="input-text">{{element.nameRus}}</td>
         </ng-container>
   
     
@@ -48,14 +46,16 @@
             Действие
           </th>
           <td mat-cell *matCellDef="let element">
-              <mat-icon (click)="delete(element.id)" style="color: red;">delete</mat-icon>
+              <!-- <mat-icon (click)="delete(element.id)" style="color: red;">delete</mat-icon> -->
           </td>
         </ng-container>
         
           <tr mat-header-row *matHeaderRowDef="displayCols; sticky:true" style="font-size: 14px; height: 35px;"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayCols;" style="font-size: 12px; height: 25px;"></tr>
-        </table>
+          <tr mat-row *matRowDef="let row; columns: displayCols;" style="font-size: 12px; height: 25px;" (dblclick)="openItem(row)"></tr>
+      </table>
     </div>
       
   </div>
     
+  
+  

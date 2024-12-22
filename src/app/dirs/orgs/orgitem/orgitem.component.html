@@ -16,6 +16,27 @@
     </mat-form-field>
 
 
+    <mat-form-field style="width: 100%">
+        <mat-label>Родитель</mat-label>
+        <input type="text" matInput [ngModel]="ds?.parent?.nameRus" name="parent"
+            readonly (click)="openOrgSel()">
+    </mat-form-field>
+
+
+    <!-- <div class="mb-3" style="margin-left:15px;">
+        <label for="_org" class="form-label" style="padding: 0px !important; margin: 0px !important; font-size: 12px;">
+            Организация
+        </label>
+        <div class="input-group input-group-sm mb-3" style="width: 250px;padding: 0px !important; margin: 0px !important;">
+            <input type="text" class="form-control" id="_org" [ngModel]="ds?.parent?.nameRus"
+                style="padding: 0px 0px 0px 5px !important; margin: 0px !important;" required name="organization" readonly (click)="openOrgSel()">
+            <button class="btn btn-outline-secondary btn-outline-sm" type="button" (click)="openOrgSel()">
+                <i class="bi bi-arrow-right-square" style="color: blue"></i>       
+            </button>
+        </div>
+    </div> -->
+
+
     <div style="display: flex; gap: 10px;">
         <button type="button" class="btn btn-primary btn-sm" (click)="save()">Сохранить</button>
         <button type="button" class="btn btn-secondary btn-sm" (click)="cancel()">Закрыть</button>

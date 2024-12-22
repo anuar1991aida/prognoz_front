@@ -1,0 +1,120 @@
+<div class="content">
+
+    <!-- НАЧАЛО ВЫВОДА ШАПКИ ДОКУМЕНТА -->
+    <form class="was-validated" #form="ngForm" style="text-align: center; display: flex;">
+          <div class="mb-3" style="margin-left:15px;">
+            <label for="nom" class="form-label" style="padding: 0px !important; margin: 0px !important; font-size: 12px;">
+              Номер
+            </label>
+            <div class="input-group input-group-sm mb-3" style="height: 30px; width: 75px;padding: 0px !important; margin: 0px !important;">
+              <input  type="text" class="form-control" id="nom" 
+                      style="width: 100px; padding: 0px 0px 0px 5px !important; margin:0px !important;" 
+                      [ngModel]="ds?.numberDoc	" name="id">
+            </div>
+          </div>
+
+          <div class="mb-3" style="margin-left:15px;">
+            <label for="asd" class="form-label" style="padding: 0px !important; margin: 0px !important; font-size: 12px;">
+              Дата
+            </label>
+            <div class="input-group input-group-sm mb-3" style="height: 30px; width: 125px;padding: 0px !important; margin: 0px !important;">
+              <input type="date" class="form-control" 
+                id="asd" style="padding: 0px 0px 0px 5px !important; margin: 0px !important;" 
+                [ngModel]="ds?.svodDate" name="documentDate">
+            </div>
+          </div>
+    
+
+          <div class="mb-3" style="margin-left:15px;">
+            <label for="_org" class="form-label" style="padding: 0px !important; margin: 0px !important; font-size: 12px;">
+              Организация
+            </label>
+            <div class="input-group input-group-sm mb-3" style="width: 250px;padding: 0px !important; margin: 0px !important;">
+              <input type="text" class="form-control" id="_org" [ngModel]="ds?.organization?.nameRus"
+                    style="padding: 0px 0px 0px 5px !important; margin: 0px !important;" required name="organization" readonly (click)="openOrgSel()">
+              <button class="btn btn-outline-secondary btn-outline-sm" type="button">
+                  <i class="bi bi-arrow-right-square" style="color: blue"></i>       
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-3" style="margin-left:15px; display: flex; align-items: center; justify-content: center;">
+            <button type="button" class="btn btn-success btn-sm" style="margin-top: 20px; margin-left: 10px;" (click)="savedoc()">Сохранить</button>
+            <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 20px; margin-left: 10px;" (click)=" clodeDoc()">Закрыть</button>
+
+            <!-- <button mat-button style="margin-top: 20px; margin-left: 10px;" [matMenuTriggerFor]="menu">Приложения</button> -->
+            <button *ngIf="ds.id!=0" type="button" style="margin-top: 20px; margin-left: 10px;" class="btn btn-secondary btn-sm" [matMenuTriggerFor]="menu">
+                Приложения
+                <i class="bi bi-list"></i>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="exportxls()">Выгрузить в эксель</button>
+            </mat-menu>
+          </div>         
+    </form>    
+    
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+        <mat-tab label="Принятые документы">
+            <ng-template matTabContent>
+                <div class="table-container">
+                    <table mat-table [dataSource]="tbl" class="mat-elevation-z8">
+                
+                      <ng-container matColumnDef="nomer">
+                        <th mat-header-cell *matHeaderCellDef style="width: 25vw;">
+                          Документы
+                          <button type="button" class="btn btn-success btn-sm" style="margin-left: 5px;" (click)="zapolnit()">Заполнить</button>
+            
+                        </th>
+            
+                        <td mat-cell *matCellDef="let element" > 
+                            <div *ngIf="element.docId!=0">
+                                ПКФО №{{element.numberDoc}} от {{element.documentDate}}
+                            </div>
+                            <div *ngIf="element.svodId!=0">
+                                Свод №{{element.numberDoc}} от {{element.documentDate}}
+                            </div>
+                        </td>
+                      </ng-container>         
+                  
+                      <ng-container matColumnDef="_organization">
+                        <th mat-header-cell *matHeaderCellDef>
+                          Организация
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 60vw;" class="input-text">{{element.organization.nameRus}}</td>
+                      </ng-container>
+                
+                  
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>
+                          Действие
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-icon (click)="delete(element.id)" style="color: red;">delete</mat-icon>
+                        </td>
+                      </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayCols; sticky:true" style="font-size: 14px; height: 35px;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayCols;" style="font-size: 12px; height: 25px;"></tr>
+                      </table>
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab label="Просмотр">
+            <ng-template matTabContent>
+                <div *ngIf="urlSafe != ''" style=" width: 98%; height: 85vh">
+                    <iframe [srcdoc]="urlSafe" style="margin-left:25px; width: 100%; height: 100%; border: none; overflow: scroll;"></iframe>
+                </div>
+
+                <mat-progress-spinner *ngIf="loading" style="margin-left: calc(40vw); margin-top: calc(30vh)"
+                    mode="determinate"
+                    [value]="rotation">
+                </mat-progress-spinner>
+                  
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+    
+    
+</div>
+  

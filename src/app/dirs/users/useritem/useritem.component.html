@@ -1,1 +1,38 @@
-<p>useritem works!</p>
+<form style="padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 35vw;">
+    <mat-form-field style="width: 100%">
+      <mat-label>Пользователь</mat-label>
+      <input matInput  [(ngModel)]="ds.name" name="name">
+    </mat-form-field>
+
+    <!-- <mat-form-field style="width: 100%">
+        <mat-label>Основная организация</mat-label>
+        <input matInput [ngModel]="ds?.organization?.nameKaz" name="nameKaz" readonly>
+        <mat-icon matSuffix (click)="selOrg()">mode_edit</mat-icon>
+    </mat-form-field> -->
+
+    <mat-form-field style="width: 100%">
+        <mat-label>Основная организация</mat-label>
+        <input type="text" matInput [ngModel]="ds?.organization?.nameKaz" name="parent"
+            readonly (click)="selOrg()">
+    </mat-form-field>
+
+    <mat-accordion style="width: 100%; margin-bottom: 15px;">
+        <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+            <mat-expansion-panel-header>
+            <!-- <mat-panel-title> Изменить пароль </mat-panel-title> -->
+            <mat-panel-description>
+                Изменить пароль
+            </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p><input matInput type="password" [(ngModel)]="pas1" name="pas1"></p>
+            <p><input matInput type="password" [(ngModel)]="pas2" name="pas2"></p>
+            <p><button type="button" class="btn btn-primary btn-sm" (click)="changepassword()" [disabled]="ds.id===''">Изменить</button></p>
+        </mat-expansion-panel>
+    </mat-accordion>
+  
+
+    <div style="display: flex; gap: 10px;">
+        <button type="button" class="btn btn-primary btn-sm" (click)="save()">Сохранить</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="cancel()">Закрыть</button>
+    </div>
+</form>

@@ -8,14 +8,14 @@ import { BehaviorSubject } from 'rxjs';
 })
 
 
-
-
 export class globalService {
   constructor(
     private _snackBar: MatSnackBar
   ) { }
   
   host:string = 'http://192.168.10.251:7056'
+  // host:string = 'http://192.168.5.33:5000'
+  // host:string = 'https://pkfoback.qazna24.kz'
   
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -24,7 +24,7 @@ export class globalService {
   tabs$ = this.tabsSubject.asObservable();
   currentIndex:number = 0;
 
-
+  
 
   
   addTab(tab: { label: string, component: any, inputs?: any, paramlabel?:any}) {   
@@ -56,3 +56,16 @@ export class globalService {
   }
 
 }
+
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD.MM.YYYY HH:SS',
+  },
+  display: {
+    dateInput: 'DD.MM.YYYY HH:SS',
+    monthYearLabel: 'DD MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'DD MMMM YYYY',
+  },
+};

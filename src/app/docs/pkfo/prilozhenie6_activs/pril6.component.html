@@ -1,0 +1,122 @@
+<div class="content">
+    <!-- ТАБЛИЦЫ ПО ВКЛАДКАМ -->
+    <mat-tab-group>
+        <div *ngFor="let item of tbs; let i = index">
+            <mat-tab [label]="'Таблица 6.' + (i + 1)">
+                <ng-template matTabContent>
+                    <div class="table-container">
+                        <table mat-table [dataSource]="item" class="mat-elevation-z8">
+
+                            <ng-container matColumnDef="abp_code">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    АБП
+                                </th>
+                                <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="specCode">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Специфика
+                                </th>
+                                <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                    {{element.specCode}}  
+                                </td>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="nameRus">
+                                <th mat-header-cell *matHeaderCellDef style="width: 40vw;">
+                                    Наименование
+                                </th>
+                                <td mat-cell *matCellDef="let element">{{element.nameRus}}</td>
+                            </ng-container>
+                        
+                            
+                        
+                            <ng-container matColumnDef="rowCode">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Код строки
+                                </th>
+                                <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                    {{element.rowCode}}  
+                                </td>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="fact">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Факт
+                            </th>
+                            <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                    <input type="number" class="form-control" 
+                                        [(ngModel)]="element.fact" 
+                                        
+                                        [readonly]="tbs_zag.includes(element.rowCode)" (change)="raschetItog(i)">
+                                </div>
+                            </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="estimate">
+                                <th mat-header-cell *matHeaderCellDef>
+                                Оценка
+                                </th>
+                                <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                    <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                        <input type="number" class="form-control" [(ngModel)]="element.estimate" (change)="raschetItog(i)">
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="prediction1">
+                                <th mat-header-cell *matHeaderCellDef>
+                                Прогноз 1
+                                </th>
+                                <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                    <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                        <input type="number" class="form-control" [(ngModel)]="element.prediction1" (change)="raschetItog(i)">
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="prediction2">
+                                <th mat-header-cell *matHeaderCellDef>
+                                Прогноз 2
+                                </th>
+                                <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                    <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                        <input type="number" class="form-control" [(ngModel)]="element.prediction2" (change)="raschetItog(i)">
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="prediction3">
+                                <th mat-header-cell *matHeaderCellDef>
+                                Прогноз 3
+                                </th>
+                                <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                    <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                        <input type="number" class="form-control" [(ngModel)]="element.prediction3" (change)="raschetItog(i)">
+                                    </div>
+                                </td>
+                            </ng-container>
+                    
+                            
+                            <tr mat-header-row *matHeaderRowDef="tbs_cols; sticky:true" style="font-size: 14px; height: 35px;"></tr>
+                            <tr mat-row *matRowDef="let row; columns: tbs_cols;" style="font-size: 12px; height: 25px;" [ngClass]="{ 'bold-row': tbs_zag.includes(row.rowCode) }"></tr>
+                        </table>
+                    </div>
+                </ng-template>
+            </mat-tab>
+        </div>
+    </mat-tab-group>
+  
+    <div class="mb-3" style="margin-left:15px; display: flex; align-items: center; justify-content: center;">
+        <button type="button" class="btn btn-success btn-sm" style="margin-top: 5px; margin-left: 10px;" (click)="savedoc()">Сохранить</button>
+        <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 5px; margin-left: 10px;" (click)=" clodeDoc()">Закрыть</button>
+    </div>
+
+          
+    
+</div>
+  

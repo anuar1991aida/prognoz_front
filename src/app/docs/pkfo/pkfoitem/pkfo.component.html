@@ -1,0 +1,475 @@
+<div class="content">
+
+    <!-- НАЧАЛО ВЫВОДА ШАПКИ ДОКУМЕНТА -->
+    <form class="was-validated" #form="ngForm" style="text-align: center; display: flex;">
+          <div class="mb-3" style="margin-left:15px;">
+            <label for="nom" class="form-label" style="padding: 0px !important; margin: 0px !important; font-size: 12px;">
+              Номер
+            </label>
+            <div class="input-group input-group-sm mb-3" style="height: 30px; width: 75px;padding: 0px !important; margin: 0px !important;">
+              <input  type="text" class="form-control" id="nom" 
+                      style="width: 100px; padding: 0px 0px 0px 5px !important; margin:0px !important;" 
+                      [ngModel]="ds?.numberDoc	" name="id">
+            </div>
+          </div>
+
+          <div class="mb-3" style="margin-left:15px;">
+            <label for="asd" class="form-label" style="padding: 0px !important; margin: 0px !important; font-size: 12px;">
+              Дата
+            </label>
+            <div class="input-group input-group-sm mb-3" style="height: 30px; width: 125px;padding: 0px !important; margin: 0px !important;">
+              <input type="date" class="form-control" 
+                id="asd" style="padding: 0px 0px 0px 5px !important; margin: 0px !important;" 
+                [ngModel]="ds?.documentDate" name="documentDate">
+            </div>
+          </div>
+    
+
+          <div class="mb-3" style="margin-left:15px;">
+            <label for="_org" class="form-label" style="padding: 0px !important; margin: 0px !important; font-size: 12px;">
+              Организация
+            </label>
+            <div class="input-group input-group-sm mb-3" style="width: 250px;padding: 0px !important; margin: 0px !important;">
+              <input type="text" class="form-control" id="_org" [ngModel]="ds?.organization?.nameRus"
+                    style="padding: 0px 0px 0px 5px !important; margin: 0px !important;" required name="organization" readonly (click)="openOrgSel()">
+              <button class="btn btn-outline-secondary btn-outline-sm" type="button">
+                  <i class="bi bi-arrow-right-square" style="color: blue"></i>       
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-3" style="margin-left:15px; display: flex; align-items: center; justify-content: center;">
+            <button type="button" class="btn btn-success btn-sm" style="margin-top: 20px; margin-left: 10px;" (click)="savedoc()">Сохранить</button>
+            <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 20px; margin-left: 10px;" (click)=" clodeDoc()">Закрыть</button>
+
+            <!-- <button mat-button style="margin-top: 20px; margin-left: 10px;" [matMenuTriggerFor]="menu">Приложения</button> -->
+            <button *ngIf="ds.id!=0" type="button" style="margin-top: 20px; margin-left: 10px;" class="btn btn-secondary btn-sm" [matMenuTriggerFor]="menu">
+                Приложения
+                <i class="bi bi-list"></i>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openPril('activs')">Активы</button>
+                <button mat-menu-item (click)="openPril('obligs')">Обязательства</button>
+                <button mat-menu-item (click)="openPril('incs')">Доходы и расходы</button>
+                <button mat-menu-item (click)="exportxls()">Выгрузить в эксель</button>
+            </mat-menu>
+          </div>         
+    </form>
+
+    <!-- ТАБЛИЦЫ ПО ВКЛАДКАМ -->
+    <mat-tab-group>
+        <mat-tab label="ПКФО №1">
+            <ng-template matTabContent>
+            
+                
+            <div class="table-container">
+                <table mat-table [dataSource]="pkfo1" class="mat-elevation-z8">
+                    <ng-container matColumnDef="specification_name">
+                        <th mat-header-cell *matHeaderCellDef style="width: 40vw;">
+                            Наименование
+
+                            <!-- <button *ngIf="pkfo1.length>0" type="button" 
+                                class="btn btn-success btn-sm" (click)="savePKFO(1)">Сохранить</button> -->
+
+                            <button *ngIf="pkfo1.length===0" type="button" 
+                                class="btn btn-success btn-sm" (click)="newPKFO(2)">Заполнить
+                            </button>
+                        </th>
+                        <td mat-cell *matCellDef="let element">{{element.nameRus}}</td>
+                    </ng-container>
+                
+                    
+                
+                    <ng-container matColumnDef="specification_code">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Код строки
+                    </th>
+                    <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                        {{element.rowCode}}  
+                    </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="fact">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Факт
+                    </th>
+                    <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                        <!-- {{element.fact}} -->
+                        <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" *ngIf="!zagolovs_pkfo1.includes(element.rowCode)">
+                            <input type="number" class="form-control" 
+                                [(ngModel)]="element.fact" 
+                                (change)="repeatitog(1)"
+                                [readonly]="zagolovs_pkfo1.includes(element.rowCode)">
+                        </div>
+                    </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="estimate">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Оценка
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.estimate}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" *ngIf="!zagolovs_pkfo1.includes(element.rowCode)">
+                                <input type="number" class="form-control" [(ngModel)]="element.estimate" (change)="repeatitog(1)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction1">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 1
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction1}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" *ngIf="!zagolovs_pkfo1.includes(element.rowCode)">
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction1" (change)="repeatitog(1)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction2">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 2
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction2}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" *ngIf="!zagolovs_pkfo1.includes(element.rowCode)">
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction2" (change)="repeatitog(1)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction3">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 3
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction3}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" *ngIf="!zagolovs_pkfo1.includes(element.rowCode)">
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction3" (change)="repeatitog(1)">
+                            </div>
+                        </td>
+                    </ng-container>
+            
+                    
+                    <tr mat-header-row *matHeaderRowDef="pkfo1columns; sticky:true" style="font-size: 14px; height: 35px;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: pkfo1columns;" style="font-size: 12px; height: 25px;" [ngClass]="{ 'bold-row': zagolovs_pkfo1.includes(row.rowCode) }"></tr>
+                </table>
+            </div>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="ПКФО №2">
+            <ng-template matTabContent>
+            <div class="table-container">
+                <table mat-table [dataSource]="pkfo2" class="mat-elevation-z8">
+                    
+
+                    <ng-container matColumnDef="specification_name">
+                        <th mat-header-cell *matHeaderCellDef style="width: 40vw;">
+                            Наименование
+
+                            <!-- <button *ngIf="pkfo2.length>0" type="button" 
+                                    class="btn btn-success btn-sm" (click)="savePKFO(2)">Сохранить</button> -->
+
+                            <button *ngIf="pkfo2.length===0" type="button" 
+                                class="btn btn-success btn-sm" (click)="newPKFO(2)">Заполнить
+                            </button>
+                        </th>
+                        <td mat-cell *matCellDef="let element">{{element.nameRus}}</td>
+                    </ng-container>
+                
+                    
+                
+                    <ng-container matColumnDef="specification_code">
+                        <th mat-header-cell *matHeaderCellDef>
+                            Код строки
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            {{element.rowCode}}  
+                        </td>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="fact">
+                        <th mat-header-cell *matHeaderCellDef>
+                            Факт
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.fact}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                <input type="number" class="form-control" [(ngModel)]="element.fact" (change)="repeatitog(2)" 
+                                [readonly]="zagolovs_pkfo2.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="estimate">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Оценка
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.estimate}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                <input type="number" class="form-control" [(ngModel)]="element.estimate" (change)="repeatitog(2)"
+                                [readonly]="zagolovs_pkfo2.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction1">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 1
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction1}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction1" (change)="repeatitog(2)"
+                                [readonly]="zagolovs_pkfo2.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction2">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 2
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction2}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction2" (change)="repeatitog(2)"
+                                [readonly]="zagolovs_pkfo2.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction3">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 3
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction3}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction3" (change)="repeatitog(2)"
+                                [readonly]="zagolovs_pkfo2.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+            
+                    
+                    <tr mat-header-row *matHeaderRowDef="pkfo1columns; sticky:true" style="font-size: 14px; height: 35px;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: pkfo1columns;" style="font-size: 12px; height: 25px;" [ngClass]="{ 'bold-row': zagolovs_pkfo2.includes(row.rowCode) }"></tr>
+                </table>
+            </div>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="ПКФО №3">
+            <ng-template matTabContent>
+            <div class="table-container">
+                <table mat-table [dataSource]="pkfo3" class="mat-elevation-z8">
+                    <ng-container matColumnDef="specification_name">
+                        <th mat-header-cell *matHeaderCellDef style="width: 40vw;">
+                            Наименование
+
+                            <!-- <button *ngIf="pkfo3.length>0" type="button" 
+                                    class="btn btn-success btn-sm" (click)="savePKFO(3)">Сохранить</button> -->
+
+                            <button *ngIf="pkfo3.length===0" type="button" 
+                                class="btn btn-success btn-sm" (click)="newPKFO(3)">Заполнить
+                            </button>
+                        </th>
+                        <td mat-cell *matCellDef="let element">{{element.nameRus}}</td>
+                    </ng-container>
+                
+                    
+                
+                    <ng-container matColumnDef="specification_code">
+                        <th mat-header-cell *matHeaderCellDef>
+                            Код строки
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            {{element.rowCode}}  
+                        </td>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="fact">
+                        <th mat-header-cell *matHeaderCellDef>
+                            Факт
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.fact}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                <input type="number" class="form-control" [(ngModel)]="element.fact" (change)="repeatitog(3)" 
+                                [readonly]="zagolovs_pkfo3.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="estimate">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Оценка
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.estimate}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                <input type="number" class="form-control" [(ngModel)]="element.estimate" (change)="repeatitog(3)"
+                                [readonly]="zagolovs_pkfo3.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction1">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 1
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction1}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction1" (change)="repeatitog(3)"
+                                [readonly]="zagolovs_pkfo3.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction2">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 2
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction2}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction2" (change)="repeatitog(3)"
+                                [readonly]="zagolovs_pkfo3.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="prediction3">
+                        <th mat-header-cell *matHeaderCellDef>
+                        Прогноз 3
+                        </th>
+                        <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                            <!-- {{element.prediction3}} -->
+                            <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                <input type="number" class="form-control" [(ngModel)]="element.prediction3" (change)="repeatitog(3)"
+                                [readonly]="zagolovs_pkfo3.includes(element.rowCode)">
+                            </div>
+                        </td>
+                    </ng-container>
+            
+                    
+                    <tr mat-header-row *matHeaderRowDef="pkfo1columns; sticky:true" style="font-size: 14px; height: 35px;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: pkfo1columns;" style="font-size: 12px; height: 25px;" [ngClass]="{ 'bold-row': zagolovs_pkfo3.includes(row.rowCode) }"></tr>
+                </table>
+            </div>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="ПКФО №4">
+            <ng-template matTabContent>
+                <div class="table-container">
+                    <table mat-table [dataSource]="pkfo4" class="mat-elevation-z8">
+                        
+
+                        <ng-container matColumnDef="specification_name">
+                            <th mat-header-cell *matHeaderCellDef style="width: 40vw;">
+                                Наименование
+
+                                <!-- <button *ngIf="pkfo4.length>0" type="button" 
+                                        class="btn btn-success btn-sm" (click)="savePKFO(4)">Сохранить</button> -->
+
+                                <button *ngIf="pkfo4.length===0" type="button" 
+                                    class="btn btn-success btn-sm" (click)="newPKFO(4)">Заполнить
+                                </button>
+                            </th>
+                            <td mat-cell *matCellDef="let element">{{element.nameRus}}</td>
+                        </ng-container>
+                    
+                        
+                    
+                        <ng-container matColumnDef="specification_code">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Код строки
+                            </th>
+                            <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                {{element.rowCode}}  
+                            </td>
+                            </ng-container>
+                    
+                            <ng-container matColumnDef="fact">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Факт
+                            </th>
+                            <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                <!-- {{element.fact}} -->
+                                <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                    <input type="number" class="form-control" [(ngModel)]="element.fact" (change)="repeatitog(4)" 
+                                    [readonly]="zagolovs_pkfo4.includes(element.rowCode)">
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="estimate">
+                            <th mat-header-cell *matHeaderCellDef>
+                            Оценка
+                            </th>
+                            <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                <!-- {{element.estimate}} -->
+                                <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                    <input type="number" class="form-control" [(ngModel)]="element.estimate" (change)="repeatitog(4)"
+                                    [readonly]="zagolovs_pkfo4.includes(element.rowCode)">
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="prediction1">
+                            <th mat-header-cell *matHeaderCellDef>
+                            Прогноз 1
+                            </th>
+                            <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                <!-- {{element.prediction1}} -->
+                                <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                    <input type="number" class="form-control" [(ngModel)]="element.prediction1" (change)="repeatitog(4)"
+                                    [readonly]="zagolovs_pkfo4.includes(element.rowCode)">
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="prediction2">
+                            <th mat-header-cell *matHeaderCellDef>
+                            Прогноз 2
+                            </th>
+                            <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                <!-- {{element.prediction2}} -->
+                                <div class="input-group input-group-sm mb-3" style="padding-top: 12px;" >
+                                    <input type="number" class="form-control" [(ngModel)]="element.prediction2" (change)="repeatitog(4)"
+                                    [readonly]="zagolovs_pkfo4.includes(element.rowCode)">
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="prediction3">
+                            <th mat-header-cell *matHeaderCellDef>
+                            Прогноз 3
+                            </th>
+                            <td mat-cell *matCellDef="let element"  style="width: 10vw;" class="input-text">
+                                <!-- {{element.prediction3}} -->
+                                <div class="input-group input-group-sm mb-3" style="padding-top: 12px;">
+                                    <input type="number" class="form-control" [(ngModel)]="element.prediction3" (change)="repeatitog(4)"
+                                    [readonly]="zagolovs_pkfo4.includes(element.rowCode)">
+                                </div>
+                            </td>
+                        </ng-container>
+                
+                        
+                        <tr mat-header-row *matHeaderRowDef="pkfo1columns; sticky:true" style="font-size: 14px; height: 35px;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: pkfo1columns;" style="font-size: 12px; height: 25px;" [ngClass]="{ 'bold-row': zagolovs_pkfo4.includes(row.rowCode) }"></tr>
+                    </table>
+                </div>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+  
+
+          
+    
+</div>
+  

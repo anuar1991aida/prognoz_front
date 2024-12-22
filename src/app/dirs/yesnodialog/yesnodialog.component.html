@@ -1,0 +1,19 @@
+<div style="padding: 20px;">
+
+  <div class="input-group input-group-sm mb-3" style="display: flex; justify-content: center;">
+    <h5 class="card-title">{{text}}</h5>
+  </div>
+
+  <div  style="text-align: center;">
+    <button type="button" class="btn btn-secondary" (click)="close(true)"
+          style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; margin-left: 10px;">
+        Да
+    </button>
+
+    <button type="button" class="btn btn-primary" (click)="close(false)"
+          style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; margin-left: 10px;">
+          Нет
+    </button>
+  </div>
+
+</div>

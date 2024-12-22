@@ -17,7 +17,7 @@ export class orgService {
 
 
   getorglist(search:string):any {   
-      return this.http.get(this.gl.host + "/Organization")
+      return this.http.get(this.gl.host + "/Organization?search=" + search)
   }
 
 

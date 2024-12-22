@@ -1,0 +1,107 @@
+mat-icon {
+    font-size: 20px; 
+    width: 20px; 
+    height: 20px;
+    }
+  
+  
+  .nom-input {
+    margin-left: 20px;
+    width: 100px;
+    height: 50px;
+    font-size: small;
+    padding: 0;
+  }
+  
+  
+  .date-input {
+    margin-left: 12px;
+    width: 190px;
+    height: 50px;
+    font-size: small;
+    padding: 0;
+  }
+  
+  .org-input {
+    margin-left: 12px;
+    width: 250px;
+    height: 50px;
+    font-size: small;
+    padding: 0;
+  }
+  
+  .state-input {
+    margin-left: 12px;
+    width: 200px;
+    height: 50px;
+    font-size: small;
+    padding: 0;
+  }
+  
+  .type-input {
+    margin-left: 12px;
+    margin-right: 12px;
+    width: 200px;
+    height: 50px;
+    font-size: small;
+    padding: 0px;
+  }
+  
+  
+  .sm-input {
+    margin-left: 12px;
+    width: 13vw;
+    height: 70px;
+    padding: 0;
+  }
+  
+  .savebutton, .cancelbutton {
+    /* width: 150px; */
+    height: 30px;
+    margin: 10px;
+  }
+  
+
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px); 
+    /* background-color: rgb(223, 236, 227); */
+    overflow: hidden;
+  }
+  
+ 
+  .bold-row {
+    font-weight: bold;
+  }
+  
+  .table-container {
+    height: calc(70vh); 
+    overflow-y: auto;
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+    border-radius: 15px;
+  }
+  
+  
+  .footer {
+    border: 1px solid #e0e0e0;
+    font-weight: bold;
+    text-align: right;
+  }
+  
+  
+  .mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+  }
+  
+  .mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+    background-color: rgb(232, 240, 231);
+  }
+  
+  

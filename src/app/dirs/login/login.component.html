@@ -1,0 +1,16 @@
+<div style="width: 300px; margin-top: calc(40vh); margin-left: calc(50vw - 300px)">
+    <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text">Логин</span>
+        <input type="text" [(ngModel)]="login" class="form-control" placeholder="введите логин" aria-label="Username" >
+    </div>
+
+    <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text">Пароль</span>
+        <input type="password" [(ngModel)]="pass" class="form-control" placeholder="введите пароль" aria-label="Password" >
+    </div>
+
+    <div class="d-grid gap-2">
+        <button type="button" class="btn btn-primary btn-sm" (click)="auth()">войти в систему</button>
+    </div>
+    
+</div>

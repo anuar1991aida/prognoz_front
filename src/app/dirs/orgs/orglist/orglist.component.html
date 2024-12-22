@@ -1,7 +1,7 @@
 
 <div class="content">
     <div class="toolbar">
-      <button type="button" class="btn btn-success btn-sm" style="margin-left: 15px;" (click)="openItem(null)">Добавить</button>
+      <button type="button" class="btn btn-success btn-sm" style="margin-left: 15px;" (click)="openItem(null)" *ngIf="data==='simple'">Добавить</button>
   
       <div style="width: calc(100vw); padding-right: 15px;">
         <div class="input-group input-group-sm mb-3" style="height: 15px; width: 160px; float: right;">
@@ -54,7 +54,7 @@
         
           <tr mat-header-row *matHeaderRowDef="displayCols; sticky:true" style="font-size: 14px; height: 35px;"></tr>
           <tr mat-row *matRowDef="let row; columns: displayCols;" style="font-size: 12px; height: 25px;"></tr>
-        </table>
+      </table>
     </div>
       
   </div>
